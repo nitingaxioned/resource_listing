@@ -13,7 +13,8 @@ $lookingfor = get_the_terms( $current_post_id , "resource-cat-looking");
 ?>
 <main>
 	<div class="wrapper">
-		<?php
+		<div class="full-post">
+			<?php
 			if ( $title ) {?>
 				<h2><?php echo $title; ?></h2>
 			<?php } 
@@ -37,7 +38,11 @@ $lookingfor = get_the_terms( $current_post_id , "resource-cat-looking");
 			<?php } 
 			if ( $disc ) {?>
 				<p><?php echo $disc; ?></p>
-			<?php } 
+			<?php } ?>
+		</div>
+		<!-- also read section -->
+		<div class="also-read">
+			<?php
 			$cat_arr = [];
 			foreach($iam as $val) {
 				array_push($cat_arr, $val->term_id);
@@ -104,9 +109,8 @@ $lookingfor = get_the_terms( $current_post_id , "resource-cat-looking");
 					}
 				?>
 				</ul>
-			<?php
-			}
-		?>
+			<?php } ?>
+		</div>
 	</div>
 </main>
 <?php

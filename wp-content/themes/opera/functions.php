@@ -86,7 +86,8 @@ function custom_post_types() {
         'supports' => array('title','author','excerpt','thumbnail')
     ));
 
-    //taxonomy for resource
+    //taxonomys for resource
+    
 	register_taxonomy('resource-cat-iam', 'resource', array(
 	  'hierarchical' => true,
 	  'labels' => array(

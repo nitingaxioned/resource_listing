@@ -296,6 +296,14 @@ li a:hover .hover-box{
   width: 15%;
 }
   
+.also-read {
+  padding: 40px 0;
+}
+
+.full-post { 
+  width: 80%; 
+  margin: auto;
+}
 /*=================================
     footer styling starts here
 =================================*/ 

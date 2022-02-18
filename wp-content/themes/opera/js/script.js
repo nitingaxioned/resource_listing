@@ -1,13 +1,14 @@
-let data_paged = 1;
-let cat_iam = '';
-let cat_looking = '';
+let data_paged = 1; // to set paged value
+let cat_iam = ''; // default value for catogory filter
+let cat_looking = ''; // default value for catogory filter
 let ajax_status = false;
-let count = 0;
+let count = 0; // no of post in list.
 jQuery(document).ready(function () {
     jQuery('.show_more').hide();
     jQuery('.show_less').hide();
-    filterResources(cat_iam, cat_looking, data_paged);
+    filterResources(cat_iam, cat_looking, data_paged); // default first time load
 
+    // click functionality for explore btn
     jQuery(".find").click(function() {
         if (!ajax_status) {
             data_paged = 1;
@@ -17,6 +18,7 @@ jQuery(document).ready(function () {
         }
     });
 
+    // click functionality for loadmore btn
     jQuery('.show_more').click(function () {
         count = jQuery('.list-resource li').length;
         data_paged++;
@@ -24,6 +26,7 @@ jQuery(document).ready(function () {
         filterResources(cat_iam, cat_looking, data_paged);
     });
 
+    // click functionality for showless btn
     jQuery('.show_less').click(function () {
         if( !ajax_status ) {
             data_paged = 1;
@@ -38,6 +41,7 @@ jQuery(document).ready(function () {
     });
 });
 
+// function to make ajax call
 function filterResources(id_iam, id_looking, paged) {
     jQuery('.show_less').hide();
     jQuery('.show_more').hide();
@@ -69,6 +73,7 @@ function filterResources(id_iam, id_looking, paged) {
     });
 }
 
+// to handle visibility of load more btn
 function setLoadMoreBtn(){
     let temp = jQuery('.list-resource').children().last().hasClass("hide-me");
     temp ? jQuery('.show_more').hide() : jQuery('.show_more').show();
