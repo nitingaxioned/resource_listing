@@ -143,7 +143,7 @@ nav{ width: 100%; }
 }
 
 .nav-list li a:hover {
-  color: #69ad31;
+  color: #fafafa;
 }
 
 /*=================================
@@ -157,7 +157,6 @@ nav{ width: 100%; }
   margin: auto;
   padding-top: 46px;
   max-width: 1350px;
-  background-color: #69ad31;
 }
 
 p {
@@ -218,9 +217,21 @@ h4 {
     text-transform: uppercase;
     color: #454545;
     font-weight: 600;
-    font-size: 22px;
-    padding: 10px 0;
+    font-size: 18px;
+    padding: 10px 0 5px;
 }
+
+.hide-me { display: none; }
+
+span {
+  background: #ccc;
+  padding: 3px;
+  font-size: 13px;
+  display: inline-block;
+  border-radius: 5px;
+}
+
+.ilter-box { text-align: center; }
 
 .lists {
   display: flex;
@@ -271,7 +282,28 @@ h4 {
 li a:hover .hover-box{
     opacity: 1;
 }
+
+.resource-list li {
+  display: flex;
+  padding: 10px 0;
+  justify-content: space-between;
+}
+.max-width {
+  width: 65%;
+}
+
+.min-width {
+  width: 15%;
+}
   
+.also-read {
+  padding: 40px 0;
+}
+
+.full-post { 
+  width: 80%; 
+  margin: auto;
+}
 /*=================================
     footer styling starts here
 =================================*/ 
