@@ -6,7 +6,7 @@
 ?>
 <!--main section start-->
 <main>
-    <p>xxx</p>
+    
 </main>
 <!--main section end-->
 <?php
