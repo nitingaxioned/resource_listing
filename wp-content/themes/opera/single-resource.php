@@ -1,13 +1,16 @@
 <?php  
-  get_header();
-  has_post_thumbnail() && ($img_url = get_the_post_thumbnail_url());
-  $title = get_the_title();
-  $excerpt = get_the_excerpt();
-  $disc = get_field('discription');
-  $current_post_id = get_the_ID();
-  $iam = get_the_terms( $current_post_id , "resource-cat-iam");
-  $lookingfor = get_the_terms( $current_post_id , "resource-cat-looking");
- ?>
+get_header();
+if (has_post_thumbnail()) {
+	$img_url = get_the_post_thumbnail_url();
+	$alt = get_post_meta( get_post_thumbnail_id(), '_wp_attachment_image_alt', true);
+}
+$title = get_the_title();  
+$excerpt = get_the_excerpt();
+$disc = get_field('discription');
+$current_post_id = get_the_ID();
+$iam = get_the_terms( $current_post_id , "resource-cat-iam");
+$lookingfor = get_the_terms( $current_post_id , "resource-cat-looking");
+?>
 <main>
 	<div class="wrapper">
 		<?php
@@ -27,12 +30,11 @@
 			if ( $excerpt ) {?>
 				<p><?php echo $excerpt; ?></p>
 			<?php } 
-			if( has_post_thumbnail() ) {?>
-			<div class="img-box">
-				<img src="<?php echo $img_url ?>" alt="thumbnail">
-			</div>
-			<?php
-            }
+			if (has_post_thumbnail()) {?>
+				<div class="img-box">
+					<img src='<?php echo $img_url; ?>' alt='<?php echo $alt; ?>'>
+				</div>
+			<?php } 
 			if ( $disc ) {?>
 				<p><?php echo $disc; ?></p>
 			<?php } 
