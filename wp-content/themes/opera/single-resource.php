@@ -10,6 +10,7 @@ $disc = get_field('discription');
 $current_post_id = get_the_ID();
 $iam = get_the_terms( $current_post_id , "resource-cat-iam");
 $lookingfor = get_the_terms( $current_post_id , "resource-cat-looking");
+$relaited = get_field('recommendation'); 
 ?>
 <main>
 	<div class="wrapper">
@@ -40,43 +41,24 @@ $lookingfor = get_the_terms( $current_post_id , "resource-cat-looking");
 				<p><?php echo $disc; ?></p>
 			<?php } ?>
 		</div>
-		<!-- also read section -->
+		<?php if($relaited) {?>
+		<!-- also read section / recommendation / relaited post -->
 		<div class="also-read">
+			<h3>Also Checkout :</h3>
+			<ul class="resource-list">
 			<?php
-			$cat_arr = [];
-			foreach($iam as $val) {
-				array_push($cat_arr, $val->term_id);
-			}
-			$queryArr = array(
-				'post_type' => 'resource',
-				'posts_per_page' => 10,
-				'post_status' => array('publish'),
-				'post__not_in' => array($current_post_id),
-				'tax_query' => array(
-					array(
-						'taxonomy' => 'resource-cat-iam',
-						'field'    => 'term_id',
-						'terms'    => $cat_arr,
-					),
-				),
-			);
-			$res = new wp_Query($queryArr);
-			if ( $res->have_posts() ) {
-				?>
-				<h3>Also Checkout :</h3>
-				<ul class="resource-list">
-				<?php
-					while ( $res->have_posts() ) { 
-						$res->the_post(); 
-						$title = get_the_title();
-						$excerpt = get_the_excerpt();
-						$link = get_permalink();
-						$current_post_id = get_the_ID();
+			if( $relaited ) {
+				foreach ($relaited as $val) {
+					if($val->post_status == "publish" && $val->ID != $current_post_id) {
+						$title = $val->post_title;
+						$excerpt = $val->post_excerpt;
+						$current_post_id = $val->ID;
+						$link = get_permalink($current_post_id);
 						$iam = get_the_terms( $current_post_id , "resource-cat-iam");
 						$lookingfor = get_the_terms( $current_post_id , "resource-cat-looking");
-						if (has_post_thumbnail()) {
-							$img_url = get_the_post_thumbnail_url();
-							$alt = get_post_meta( get_post_thumbnail_id(), '_wp_attachment_image_alt', true);
+						if (has_post_thumbnail($current_post_id)) {
+							$img_url = get_the_post_thumbnail_url($current_post_id);
+							$alt = get_post_meta( get_post_thumbnail_id($current_post_id), '_wp_attachment_image_alt', true);
 						}
 						?>
 						<li><?php
@@ -100,17 +82,19 @@ $lookingfor = get_the_terms( $current_post_id , "resource-cat-looking");
 									?>
 								</div>
 							<?php } 
-							if (has_post_thumbnail()) {?>
+							if (has_post_thumbnail($current_post_id)) {?>
 								<img src='<?php echo $img_url; ?>' class="min-width" alt='<?php echo $alt; ?>'>
 							<?php } ?>
 							<a title="Read More" href="<?php echo $link; ?>"><button class='btn'>Read More</button></a>
 						</li>
 					<?php
 					}
-				?>
-				</ul>
-			<?php } ?>
+				}
+			}
+			?>
+			</ul>
 		</div>
+		<?php } ?>
 	</div>
 </main>
 <?php
