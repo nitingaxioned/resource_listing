@@ -8,9 +8,8 @@
   $iam = get_the_terms( $current_post_id , "resource-cat-iam");
   $lookingfor = get_the_terms( $current_post_id , "resource-cat-looking");
  ?>
-<div>
-	<main>
-		<div class="wrapper">
+<main>
+	<div class="wrapper">
 		<?php
 			if ( $title ) {?>
 				<h2><?php echo $title; ?></h2>
@@ -106,8 +105,7 @@
 			<?php
 			}
 		?>
-		</div>
-	</main>
-</div>
+	</div>
+</main>
 <?php
 get_footer();

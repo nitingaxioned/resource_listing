@@ -124,9 +124,96 @@ function show_taxonomy($arr) {
     }
 }
 
-
+//used to display list of filterd resource in ajax call
+function showPostByRef($obj) {
+    $obj->the_post(); 
+    $title = get_the_title();
+    $excerpt = get_the_excerpt();
+    if (has_post_thumbnail()) {
+        $img_url = get_the_post_thumbnail_url();
+        $alt = get_post_meta( get_post_thumbnail_id(), '_wp_attachment_image_alt', true);
+    }
+    $link = get_permalink();
+    ?>
+        <li><?php
+            if ( has_post_thumbnail() ) {?>
+				<img src='<?php echo $img_url; ?>' alt='<?php echo $alt; ?>'>
+			<?php } 
+            if ( $title ) {?>
+				<h3><?php echo $title; ?></h3>
+			<?php } 
+			if ( $excerpt ) {?>
+				<p><?php echo $excerpt; ?></p>
+			<?php } ?>
+            <a title="Read More" href="<?php echo $link; ?>"><button class='btn'>Read More</button></a>
+        </li>
+    <?php
+}
 
 
 ###################################
 # // Ajax Functions
 ###################################
+
+// Scripts for ajax
+add_action( 'wp_enqueue_scripts', 'ajax_script' );
+function ajax_script() {
+    // for ajax
+    wp_enqueue_script( 'ajax-script', get_theme_file_uri('/js/script.js'), array('jquery') );
+	wp_localize_script(
+        'ajax-script',
+        'ajax_object',
+        array( 
+            'ajax_url' => admin_url( 'admin-ajax.php' ),
+            'hook' => 'filter',
+        )
+    );
+}
+
+// hooks for filter ajax
+add_action( 'wp_ajax_filter', 'filter_ajax' );
+add_action( 'wp_ajax_nopriv_filter', 'filter_ajax' );
+
+// callback for filter_ajax
+function filter_ajax(){
+	$id_iam = $_POST['id_iam'];
+	$id_looking = $_POST['id_looking'];
+    $paged = $_POST['paged'];
+    $tax_query = array('relation' => 'AND');
+    if ( $id_iam ) {
+        $tax_query[] =  array(
+                'taxonomy' => 'resource-cat-iam',
+                'field' => 'term_id',
+                'terms' => $id_iam
+            );
+    }
+    if ($id_looking) {
+        $tax_query[] =  array(
+                'taxonomy' => 'resource-cat-looking',
+                'field' => 'term_id',
+                'terms' => $id_looking
+            );
+    }
+    $queryArr = array(
+		'posts_per_page' => 9,
+		'post_type' => 'resource',
+        'post_status' => array('publish'),
+        'tax_query' => $tax_query,
+	);
+    if ($paged > 1) {
+        $queryArr['paged'] = $paged+2;
+        $queryArr['posts_per_page'] = 3;
+    }
+    $res = new wp_Query($queryArr);
+    if ($res->found_posts < 1) {
+        ?>
+        <li><h5>Nothing Found :(</h5></li>
+        <?php
+        die();
+    } else {
+        while ( $res->have_posts() ) { 
+            showPostByRef($res);
+        }
+    }
+	die();
+}
