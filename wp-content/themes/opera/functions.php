@@ -115,6 +115,14 @@ function custom_post_types() {
 # // Custom Functions
 ###################################
 
+// used to display list of LOOKING FOR & I AM A taxonomy names
+function show_taxonomy($arr) {
+    foreach($arr as $val) {
+        if ( $val->name ) {?>
+            <span><?php echo $val->name; ?></span>
+        <?php } 
+    }
+}
 
 
 
