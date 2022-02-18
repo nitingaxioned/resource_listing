@@ -2,6 +2,7 @@ let data_paged = 1;
 let cat_iam = '';
 let cat_looking = '';
 let ajax_status = false;
+let count = 0;
 jQuery(document).ready(function () {
     jQuery('.show_more').hide();
     jQuery('.show_less').hide();
@@ -17,6 +18,7 @@ jQuery(document).ready(function () {
     });
 
     jQuery('.show_more').click(function () {
+        count = jQuery('.list-resource li').length;
         data_paged++;
         jQuery('.show_more').hide();
         filterResources(cat_iam, cat_looking, data_paged);
@@ -25,7 +27,7 @@ jQuery(document).ready(function () {
     jQuery('.show_less').click(function () {
         if( !ajax_status ) {
             data_paged = 1;
-            jQuery('.load_more').show();
+            jQuery('.show_more').show();
             let n = jQuery('.list-resource li').length;
             n = n - 9;
             for (let j = 0; j < n; j++) {
@@ -57,10 +59,17 @@ function filterResources(id_iam, id_looking, paged) {
                 jQuery('.list-resource').append(data);
             }
             ajax_status = false;
+            setLoadMoreBtn();
+            paged > 1 && jQuery('.show_less').show();
         },
         error : function(errorThrown){
             alert(errorThrown);
             jQuery('.list-resource').html("<li><h5>Something went Wrong.</h5><p>Please try again...</p> </li>");
         }
     });
+}
+
+function setLoadMoreBtn(){
+    let temp = jQuery('.list-resource').children().last().hasClass("hide-me");
+    temp ? jQuery('.show_more').hide() : jQuery('.show_more').show();
 }

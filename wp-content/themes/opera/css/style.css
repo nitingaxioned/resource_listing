@@ -221,6 +221,8 @@ h4 {
     padding: 10px 0 5px;
 }
 
+.hide-me { display: none; }
+
 span {
   background: #ccc;
   padding: 3px;

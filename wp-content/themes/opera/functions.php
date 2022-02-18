@@ -205,7 +205,7 @@ function filter_ajax(){
         $queryArr['posts_per_page'] = 3;
     }
     $res = new wp_Query($queryArr);
-    if ($res->found_posts < 1) {
+    if ($res->found_posts < 1 && $paged == 1) {
         ?>
         <li><h5>Nothing Found :(</h5></li>
         <?php
@@ -214,6 +214,16 @@ function filter_ajax(){
         while ( $res->have_posts() ) { 
             showPostByRef($res);
         }
+    }
+    $queryArr['posts_per_page'] = -1;
+    $res = new wp_Query($queryArr);
+    $paged+=2;
+    $found_posts = $res->found_posts;
+    $max_paged = ceil($found_posts/3);
+    if($max_paged <= $paged){
+        ?>
+        <li class='hide-me'><p>Last Element</p></li>
+        <?php
     }
 	die();
 }
